@@ -10,10 +10,11 @@
   "author": "",
   "license": "ISC",
   "type": "module",
-  "description": "",
+  "description": "Back end for Padre Gino's",
   "dependencies": {
+    "@fastify/cors": "10.0.2",
     "@fastify/static": "7.0.4",
-    "fastify": "4.28.1",
+    "fastify": "5.0.0",
     "pino-pretty": "11.2.2",
     "promised-sqlite3": "2.1.0"
   }

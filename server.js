@@ -2,6 +2,7 @@ import fastify from "fastify";
 import path from "path";
 import { fileURLToPath } from "url";
 import { AsyncDatabase } from "promised-sqlite3";
+import cors from "@fastify/cors";
 
 const server = fastify({
   logger: {
@@ -23,17 +24,16 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",")
   : [];
 
-server.addHook("preHandler", (req, res, done) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
-
-  const isPreflight = /options/i.test(req.method);
-  if (isPreflight) {
-    return res.send();
-  }
-  done();
+server.register(cors, {
+  origin: (origin, cb) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
 });
 
 server.get("/api/pizzas", async function getPizzas(req, res) {
