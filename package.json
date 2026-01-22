@@ -17,5 +17,8 @@
     "fastify": "5.6.1",
     "pino-pretty": "11.2.2",
     "promised-sqlite3": "2.1.0"
+  },
+  "overrides": {
+    "tar": "7.5"
   }
 }
